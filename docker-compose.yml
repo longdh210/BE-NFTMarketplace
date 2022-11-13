@@ -1,0 +1,14 @@
+version: '1.29.2'
+services:
+  dev-db:
+    image: postgres
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: nft-marketplace
+    networks:
+      - longdh
+networks:
+  longdh:
