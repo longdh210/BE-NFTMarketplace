@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Network, Alchemy } from 'alchemy-sdk';
-import { NftsForOwner } from './nfts_for_owner.entity';
-import { NftsForOwnerDto } from './nfts_for_owner.dto';
+import { NftsForOwner } from '../entity/nfts_for_owner.entity';
+import { NftsForOwnerDto } from '../dto/nfts_for_owner.dto';
 
 @Injectable()
 export class NftsForOwnerService {

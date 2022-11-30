@@ -1,8 +1,8 @@
 import { Controller, Get, Inject, Param, Post } from "@nestjs/common";
-import { NftsForContract } from "./nfts_for_contract.entity";
+import { NftsForContract } from "../entity/nfts_for_contract.entity";
 import { NftsForContractService } from "./nfts_for_contract.service";
 
-@Controller('contract')
+@Controller('/api/v1/contract')
 export class NftsForContractController {
     @Inject(NftsForContractService)
     private readonly service: NftsForContractService;

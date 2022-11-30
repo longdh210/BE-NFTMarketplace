@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/commo
 import { InjectRepository } from "@nestjs/typeorm";
 import { Alchemy, Network } from "alchemy-sdk";
 import { Repository } from "typeorm";
-import { NftsForContract } from "./nfts_for_contract.entity";
+import { NftsForContract } from "../entity/nfts_for_contract.entity";
 
 @Injectable()
 export class NftsForContractService {

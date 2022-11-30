@@ -45,4 +45,5 @@ typechain-types
 #Hardhat files
 cache
 artifacts
+key.ts
 
