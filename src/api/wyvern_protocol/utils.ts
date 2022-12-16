@@ -32,7 +32,7 @@ const makeOrder = (
   replacementPattern: replacementPattern,
   staticTarget: '0x0000000000000000000000000000000000000000',
   staticExtradata: '0x',
-  paymentToken: CHAIN_ADDRESSES.localhost.MockERC20ContractAddress,
+  paymentToken: CHAIN_ADDRESSES.goerli.MockERC20ContractAddress,
   basePrice: 0,
   extra: 0,
   listingTime: 0,

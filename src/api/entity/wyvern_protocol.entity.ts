@@ -36,7 +36,7 @@ export class ListingNFT {
     expirationTime: number;
 
     @Column()
-    sellHash: string;
+    sellSign: string;
 
     @Column()
     salt: number;

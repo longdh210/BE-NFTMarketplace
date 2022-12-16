@@ -26,7 +26,7 @@ export class WyvernProtocolController {
         return this.wyvernProtocolService.mintNewNft();
     }
 
-    @Post("minttoken")
+    @Post("/minttoken")
     mintNewToken(): any {
         return this.wyvernProtocolService.mintNewToken();
     }
