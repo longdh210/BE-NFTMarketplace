@@ -6,10 +6,10 @@ import { WyvernProtocolService } from "./wyvern_protocol.service";
 export class WyvernProtocolController {
     constructor(private readonly wyvernProtocolService: WyvernProtocolService) { }
 
-    @Post("/listingandbuy/:tokenid")
-    listingAndBuy(@Param('tokenid') tokenId: number): any {
-        return this.wyvernProtocolService.listingAndBuy(tokenId);
-    }
+    // @Post("/listingandbuy/:tokenid")
+    // listingAndBuy(@Param('tokenid') tokenId: number): any {
+    //     return this.wyvernProtocolService.listingAndBuy(tokenId);
+    // }
 
     @Post("/listing")
     listing(@Body() listingDto: ListingDto): any {
@@ -21,15 +21,15 @@ export class WyvernProtocolController {
         return this.wyvernProtocolService.buyNft(listingId, buyerAddress);
     }
 
-    @Post("/mintnft")
-    mintNewNft(): any {
-        return this.wyvernProtocolService.mintNewNft();
-    }
+    // @Post("/mintnft")
+    // mintNewNft(): any {
+    //     return this.wyvernProtocolService.mintNewNft();
+    // }
 
-    @Post("/minttoken")
-    mintNewToken(): any {
-        return this.wyvernProtocolService.mintNewToken();
-    }
+    // @Post("/minttoken")
+    // mintNewToken(): any {
+    //     return this.wyvernProtocolService.mintNewToken();
+    // }
 
     @Get("/balance/:address")
     getBalance(@Param('address') address: string): any {
