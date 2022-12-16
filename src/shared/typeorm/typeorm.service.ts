@@ -10,12 +10,6 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     public createTypeOrmOptions(): TypeOrmModuleOptions {
         console.log(this.config.get('DATABASE_HOST'))
         return {
-            // type: 'postgres',
-            // host: 'localhost',
-            // port: 5434,
-            // database: 'nft-marketplace',
-            // username: 'postgres',
-            // password: "123456",
             type: 'postgres',
             host: this.config.get<string>('DATABASE_HOST'),
             port: this.config.get<number>('DATABASE_PORT'),
