@@ -45,4 +45,5 @@ typechain
 cache
 artifacts
 key.ts
+development.env
 
