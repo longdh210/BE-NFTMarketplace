@@ -38,16 +38,14 @@ export class NftsForContractService {
 
     public async createNftsForContract(address: string): Promise<NftsForContract> {
         const dataFromAPI = await this.callAPI(address);
-        console.log(dataFromAPI);
-        if (Object.keys(dataFromAPI).length === 0) {
-            throw new NotFoundException("No items found for this search");
-        }
         const nftsForContract: NftsForContract = new NftsForContract();
+        if (Object.keys(dataFromAPI).length >= 0) {
+            nftsForContract.address = address;
+            nftsForContract.nfts = dataFromAPI.nfts;
+            nftsForContract.pageKey = dataFromAPI.pageKey;
 
-        nftsForContract.address = address;
-        nftsForContract.nfts = dataFromAPI.nfts;
-        nftsForContract.pageKey = dataFromAPI.pageKey;
-
-        return this.repository.save(nftsForContract);
+            return this.repository.save(nftsForContract);
+        }
+        throw new NotFoundException("No items found for this search");
     }
 }

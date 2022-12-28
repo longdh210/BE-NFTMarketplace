@@ -37,16 +37,16 @@ export class NftsForOwnerService {
 
     public async createNftsForOwner(address: string): Promise<NftsForOwner> {
         const dataFromAPI = await this.callAPI(address);
-        if (dataFromAPI.totalCount == 0) {
-            throw new NotFoundException("No items found for this search");
-        }
         const nftsForOwner: NftsForOwner = new NftsForOwner();
 
-        nftsForOwner.address = address;
-        nftsForOwner.ownedNfts = dataFromAPI.ownedNfts;
-        nftsForOwner.pageKey = dataFromAPI.pageKey;
-        nftsForOwner.totalCount = dataFromAPI.totalCount;
+        if (dataFromAPI.totalCount >= 0) {
+            nftsForOwner.address = address;
+            nftsForOwner.ownedNfts = dataFromAPI.ownedNfts;
+            nftsForOwner.pageKey = dataFromAPI.pageKey;
+            nftsForOwner.totalCount = dataFromAPI.totalCount;
 
-        return this.repository.save(nftsForOwner);
+            return this.repository.save(nftsForOwner);
+        }
+        throw new NotFoundException("No items found for this search");
     }
 }
