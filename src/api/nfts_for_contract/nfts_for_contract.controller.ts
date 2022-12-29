@@ -12,6 +12,11 @@ export class NftsForContractController {
         return this.service.getNftsForContract(address);
     }
 
+    @Get()
+    public getAllCollections(): Promise<NftsForContract[]> {
+        return this.service.getAllContracts();
+    }
+
     @Post(':address')
     public createNftsForContract(@Param('address') address: string): Promise<NftsForContract> {
         return this.service.createNftsForContract(address);

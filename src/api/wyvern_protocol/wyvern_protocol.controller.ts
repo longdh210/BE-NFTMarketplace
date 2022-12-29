@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ListingDto } from "../dto/listing.dto";
+import { ListingNFT } from "../entity/wyvern_protocol.entity";
 import { WyvernProtocolService } from "./wyvern_protocol.service";
 
 @Controller('/api/v1/marketplace')
@@ -30,6 +31,10 @@ export class WyvernProtocolController {
     // mintNewToken(): any {
     //     return this.wyvernProtocolService.mintNewToken();
     // }
+    @Get("/listing")
+    getAllList(): Promise<ListingNFT[]> {
+        return this.wyvernProtocolService.getAllList();
+    }
 
     @Get("/balance/:address")
     getBalance(@Param('address') address: string): any {

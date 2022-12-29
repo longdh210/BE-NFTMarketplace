@@ -181,53 +181,53 @@ export class WyvernProtocolService {
 
     async listing(listingDto: ListingDto): Promise<any> {
         try {
-            let nftListingContract: MockERC721 = new ethers.Contract(listingDto.target, nftABI.abi, provider) as MockERC721;
-            // Need to set appoval on FE first
-            // nftListingContract.connect(wallet1).setApprovalForAll(wyvernExchangeContract.address, true);
+            //     let nftListingContract: MockERC721 = new ethers.Contract(listingDto.target, nftABI.abi, provider) as MockERC721;
+            //     // Need to set appoval on FE first
+            //     // nftListingContract.connect(wallet1).setApprovalForAll(wyvernExchangeContract.address, true);
 
-            const sellCallData = nftListingContract.interface.encodeFunctionData('transferFrom', [
-                listingDto.makerAddress,
-                constants.AddressZero,
-                listingDto.tokenId
-            ]);
+            //     const sellCallData = nftListingContract.interface.encodeFunctionData('transferFrom', [
+            //         listingDto.makerAddress,
+            //         constants.AddressZero,
+            //         listingDto.tokenId
+            //     ]);
 
-            const sell = makeOrder(
-                wyvernExchangeContract.address,
-                true,
-                listingDto.makerAddress,
-                CHAIN_ADDRESSES.goerli.ProxyRegistryContractAddress,
-                sellCallData,
-                replacementPatternTo,
-            )
+            //     const sell = makeOrder(
+            //         wyvernExchangeContract.address,
+            //         true,
+            //         listingDto.makerAddress,
+            //         CHAIN_ADDRESSES.goerli.ProxyRegistryContractAddress,
+            //         sellCallData,
+            //         replacementPatternTo,
+            //     )
 
-            sell.maker = listingDto.makerAddress;
-            sell.taker = constants.AddressZero;
-            sell.side = 1;
-            sell.target = listingDto.target;
-            sell.basePrice = listingDto.basePrice;
-            sell.paymentToken = tokenContract.address;
-            sell.listingTime = listingDto.listingTime;
-            sell.expirationTime = listingDto.expirationTime;
-            sell.feeMethod = 1;
+            //     sell.maker = listingDto.makerAddress;
+            //     sell.taker = constants.AddressZero;
+            //     sell.side = 1;
+            //     sell.target = listingDto.target;
+            //     sell.basePrice = listingDto.basePrice;
+            //     sell.paymentToken = tokenContract.address;
+            //     sell.listingTime = listingDto.listingTime;
+            //     sell.expirationTime = listingDto.expirationTime;
+            //     sell.feeMethod = 1;
 
-            const sellHash = hashOrder(sell);
-            // web3.eth.accounts.wallet.add(wallet1);
-            // FE sign hash and send to BE
-            const sellSig = await web3.eth.sign(sellHash, listingDto.makerAddress);
+            //     const sellHash = hashOrder(sell);
+            //     // web3.eth.accounts.wallet.add(wallet1);
+            //     // FE sign hash and send to BE
+            //     const sellSig = await web3.eth.sign(sellHash, listingDto.makerAddress);
 
             let listingNft: ListingNFT = new ListingNFT();
             listingNft.tokenId = listingDto.tokenId;
             listingNft.target = listingDto.target;
             listingNft.makerAddress = listingDto.makerAddress
-            listingNft.takerAddress = sell.taker;
-            listingNft.feeRecipient = sell.feeRecipient;
-            listingNft.callData = sell._calldata;
+            listingNft.takerAddress = listingDto.taker;
+            listingNft.feeRecipient = listingDto.feeRecipient;
+            listingNft.callData = listingDto._calldata;
             listingNft.paymentToken = listingDto.paymentToken;
             listingNft.basePrice = listingDto.basePrice;
             listingNft.listingTime = listingDto.listingTime;
             listingNft.expirationTime = listingDto.expirationTime;
-            listingNft.sellSign = sellSig;
-            listingNft.salt = sell.salt;
+            listingNft.sellSign = listingDto.sellSig;
+            listingNft.salt = listingDto.salt;
 
             return this.repository.save(listingNft);
         } catch (error) {
@@ -365,6 +365,10 @@ export class WyvernProtocolService {
     //     await transaction.wait();
     //     return transaction.toString();
     // }
+    async getAllList(): Promise<ListingNFT[]> {
+        let allList = this.repository.find();
+        return allList;
+    }
 
     async checkTokenBalance(address: string): Promise<any> {
         // let tokenContract = new ethers.Contract(CHAIN_ADDRESSES.goerli.MockERC20ContractAddress, tokenABI.abi, provider);

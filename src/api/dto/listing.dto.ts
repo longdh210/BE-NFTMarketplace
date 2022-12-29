@@ -5,6 +5,15 @@ export class ListingDto {
     makerAddress: string;
 
     @IsNotEmpty()
+    taker: string;
+
+    @IsNotEmpty()
+    feeRecipient: string;
+
+    @IsNotEmpty()
+    _calldata: string;
+
+    @IsNotEmpty()
     tokenId: number;
 
     @IsNotEmpty()
@@ -21,4 +30,10 @@ export class ListingDto {
 
     @IsNotEmpty()
     expirationTime: number;
+
+    @IsNotEmpty()
+    sellSig: string;
+
+    @IsNotEmpty()
+    salt: number;
 }

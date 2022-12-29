@@ -48,4 +48,9 @@ export class NftsForContractService {
         }
         throw new NotFoundException("No items found for this search");
     }
+
+    public async getAllContracts(): Promise<NftsForContract[]> {
+        let collection = this.repository.find();
+        return collection;
+    }
 }
