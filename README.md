@@ -1,13 +1,23 @@
-# Sample Hardhat Project
+# Back-end NFT-Marketplace App
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+Project building based on things related to Project 2
 
-Try running some of the following tasks:
+## Guiding Teacher
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
-```
+- Lecture Nguyễn Tấn Toàn
+
+## Contributors
+
+- Dương Hoàng Long - 19521779
+- Lê Nguyễn Minh Khoa - 19521693
+
+### `npm i`
+
+Install node module for project
+
+### `npm run start:dev`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to interact in Postman.
+
+You will also see any lint errors in the console.
