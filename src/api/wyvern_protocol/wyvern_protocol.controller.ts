@@ -22,6 +22,11 @@ export class WyvernProtocolController {
         return this.wyvernProtocolService.buyNft(listingId, buyerAddress);
     }
 
+    @Post("/delete/:tokenId/:contractAddress")
+    deleteListing(@Param('tokenId') tokenId: number, @Param('contractAddress') contractAddress: string): any {
+        return this.wyvernProtocolService.deleteNft(tokenId, contractAddress);
+    }
+
     // @Post("/mintnft")
     // mintNewNft(): any {
     //     return this.wyvernProtocolService.mintNewNft();

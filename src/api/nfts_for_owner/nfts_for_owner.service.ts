@@ -18,7 +18,7 @@ export class NftsForOwnerService {
         if (owner.totalCount == 0) {
             throw new NotFoundException("No items found for this search");
         }
-        return owner;
+        return this.createNftsForOwner(address);
     }
 
     async callAPI(address: string): Promise<any> {

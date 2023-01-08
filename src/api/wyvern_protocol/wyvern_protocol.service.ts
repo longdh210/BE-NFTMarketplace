@@ -25,6 +25,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ListingNFT } from '../entity/wyvern_protocol.entity';
 import { Repository } from 'typeorm';
 // import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+// import { key } from "../../../key";
 
 const replacementPatternFrom =
     '0x00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';
@@ -32,7 +33,7 @@ const replacementPatternFrom =
 const replacementPatternTo =
     '0x000000000000000000000000000000000000000000000000000000000000000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000000000000';
 
-let web3 = new Web3("https://eth-goerli.g.alchemy.com/v2/BAexJjh839qZdzF1_CxPlqcd3WRQexU9");
+let web3 = new Web3("https://goerli.infura.io/v3/");
 let provider = new ethers.providers.JsonRpcProvider("https://eth-goerli.g.alchemy.com/v2/BAexJjh839qZdzF1_CxPlqcd3WRQexU9");
 let nftContract: MockERC721 = new ethers.Contract(CHAIN_ADDRESSES.goerli.MockERC721ContractAddress, nftABI.abi, provider) as MockERC721;
 let tokenContract = new ethers.Contract(CHAIN_ADDRESSES.goerli.MockERC20ContractAddress, tokenABI.abi, provider);
@@ -180,41 +181,62 @@ export class WyvernProtocolService {
     // }
 
     async listing(listingDto: ListingDto): Promise<any> {
+        // try {
+        //     console.log("run listing");
+        //     let nftListingContract: MockERC721 = new ethers.Contract(listingDto.target, nftABI.abi, provider) as MockERC721;
+        //     // Need to set appoval on FE first
+        //     await nftListingContract.connect(walletOwner).approve(wyvernExchangeContract.address, listingDto.tokenId);
+
+        //     const sellCallData = nftListingContract.interface.encodeFunctionData('transferFrom', [
+        //         listingDto.makerAddress,
+        //         constants.AddressZero,
+        //         listingDto.tokenId
+        //     ]);
+        //     console.log("run sau call data");
+
+        //     const sell = makeOrder(
+        //         wyvernExchangeContract.address,
+        //         true,
+        //         listingDto.makerAddress,
+        //         CHAIN_ADDRESSES.goerli.ProxyRegistryContractAddress,
+        //         sellCallData,
+        //         replacementPatternTo,
+        //     )
+        //     console.log("run sau makeOrder");
+
+        //     sell.maker = listingDto.makerAddress;
+        //     sell.taker = constants.AddressZero;
+        //     sell.side = 1;
+        //     sell.target = listingDto.target;
+        //     sell.basePrice = listingDto.basePrice;
+        //     sell.paymentToken = tokenContract.address;
+        //     sell.listingTime = listingDto.listingTime;
+        //     sell.expirationTime = listingDto.expirationTime;
+        //     sell.feeMethod = 1;
+        //     console.log("typeOf:", typeof (listingDto.basePrice), typeof (listingDto.listingTime));
+
+
+        //     const sellHash = hashOrder(sell);
+        //     web3.eth.accounts.wallet.add(walletOwner);
+        //     // FE sign hash and send to BE
+        //     const sellSig = await web3.eth.sign(sellHash, listingDto.makerAddress);
+        //     console.log("run1");
+        //     let listingNft: ListingNFT = new ListingNFT();
+        //     listingNft.tokenId = listingDto.tokenId;
+        //     listingNft.target = listingDto.target;
+        //     listingNft.makerAddress = listingDto.makerAddress
+        //     listingNft.takerAddress = constants.AddressZero;
+        //     listingNft.feeRecipient = listingDto.feeRecipient;
+        //     listingNft.callData = sellCallData;
+        //     listingNft.paymentToken = listingDto.paymentToken;
+        //     listingNft.basePrice = listingDto.basePrice;
+        //     listingNft.listingTime = listingDto.listingTime;
+        //     listingNft.expirationTime = listingDto.expirationTime;
+        //     listingNft.sellSign = sellSig;
+        //     listingNft.salt = sell.salt;
+        //     console.log("listing:", listingNft);
+        //     return this.repository.save(listingNft);
         try {
-            //     let nftListingContract: MockERC721 = new ethers.Contract(listingDto.target, nftABI.abi, provider) as MockERC721;
-            //     // Need to set appoval on FE first
-            //     // nftListingContract.connect(wallet1).setApprovalForAll(wyvernExchangeContract.address, true);
-
-            //     const sellCallData = nftListingContract.interface.encodeFunctionData('transferFrom', [
-            //         listingDto.makerAddress,
-            //         constants.AddressZero,
-            //         listingDto.tokenId
-            //     ]);
-
-            //     const sell = makeOrder(
-            //         wyvernExchangeContract.address,
-            //         true,
-            //         listingDto.makerAddress,
-            //         CHAIN_ADDRESSES.goerli.ProxyRegistryContractAddress,
-            //         sellCallData,
-            //         replacementPatternTo,
-            //     )
-
-            //     sell.maker = listingDto.makerAddress;
-            //     sell.taker = constants.AddressZero;
-            //     sell.side = 1;
-            //     sell.target = listingDto.target;
-            //     sell.basePrice = listingDto.basePrice;
-            //     sell.paymentToken = tokenContract.address;
-            //     sell.listingTime = listingDto.listingTime;
-            //     sell.expirationTime = listingDto.expirationTime;
-            //     sell.feeMethod = 1;
-
-            //     const sellHash = hashOrder(sell);
-            //     // web3.eth.accounts.wallet.add(wallet1);
-            //     // FE sign hash and send to BE
-            //     const sellSig = await web3.eth.sign(sellHash, listingDto.makerAddress);
-
             let listingNft: ListingNFT = new ListingNFT();
             listingNft.tokenId = listingDto.tokenId;
             listingNft.target = listingDto.target;
@@ -238,115 +260,117 @@ export class WyvernProtocolService {
     }
 
     async buyNft(listingId: number, buyerAddress: string) {
-        try {
-            // Need to approve token transfer proxy first
-            // await tokenContract.connect(wallet2).approve(CHAIN_ADDRESSES.goerli.TokenTransferProxyContractAddress, 1000);
+        //     try {
+        //         // Need to approve token transfer proxy first
+        //         await tokenContract.connect(wallet2).approve(CHAIN_ADDRESSES.goerli.TokenTransferProxyContractAddress, 1000);
 
-            let overrides = {
-                gasLimit: 2100000,
-                gasPrice: 8000000000
-            };
+        //         let overrides = {
+        //             gasLimit: 2100000,
+        //             gasPrice: 8000000000
+        //         };
 
-            const listing = await this.repository.findOneBy({ id: listingId });
-            if (!listing) {
-                throw new NotFoundException("No listing found for this search");
-            }
+        //         const listing = await this.repository.findOneBy({ id: listingId });
+        //         if (!listing) {
+        //             console.log("run");
+        //             throw new NotFoundException("No listing found for this search");
+        //         }
 
-            let nftListingContract: MockERC721 = new ethers.Contract(listing.target, nftABI.abi, provider) as MockERC721;
-            const buyCallData = nftListingContract.interface.encodeFunctionData('transferFrom', [
-                constants.AddressZero,
-                buyerAddress,
-                listing.tokenId
-            ]);
+        //         let nftListingContract: MockERC721 = new ethers.Contract(listing.target, nftABI.abi, provider) as MockERC721;
+        //         const buyCallData = nftListingContract.interface.encodeFunctionData('transferFrom', [
+        //             constants.AddressZero,
+        //             buyerAddress,
+        //             listing.tokenId
+        //         ]);
+        //         console.log("run sau call data")
+        //         const buy = makeOrder(
+        //             wyvernExchangeContract.address,
+        //             false,
+        //             listing.makerAddress,
+        //             listing.target,
+        //             buyCallData,
+        //             replacementPatternFrom,
+        //         )
+        //         buy.maker = buyerAddress;
+        //         buy.taker = listing.makerAddress;
+        //         buy.target = listing.target;
+        //         buy.basePrice = listing.basePrice;
+        //         buy.paymentToken = tokenContract.address;
+        //         buy.listingTime = listing.listingTime;
+        //         buy.expirationTime = listing.expirationTime;
+        //         buy.feeMethod = 1;
 
-            const buy = makeOrder(
-                wyvernExchangeContract.address,
-                false,
-                listing.makerAddress,
-                listing.target,
-                buyCallData,
-                replacementPatternFrom,
-            )
-            buy.maker = buyerAddress;
-            buy.taker = listing.makerAddress;
-            buy.target = listing.target;
-            buy.basePrice = listing.basePrice;
-            buy.paymentToken = tokenContract.address;
-            buy.listingTime = listing.listingTime;
-            buy.expirationTime = listing.expirationTime;
-            buy.feeMethod = 1;
-
-            const buyHash = hashOrder(buy);
-            // web3.eth.accounts.wallet.add(wallet2);
-            const buySig = await web3.eth.sign(buyHash, buyerAddress);
-            const splitBuySig = ethers.utils.splitSignature(buySig);
-            const splitSellSig = ethers.utils.splitSignature(listing.sellSign);
-            // FE call function
-            // let transaction = await
-            //     wyvernExchangeContract.connect(wallet2).atomicMatch_(
-            //         [
-            //             buy.exchange,
-            //             buy.maker,
-            //             buy.taker,
-            //             buy.feeRecipient,
-            //             buy.target,
-            //             buy.staticTarget,
-            //             buy.paymentToken,
-            //             wyvernExchangeContract.address,
-            //             listing.makerAddress,
-            //             listing.takerAddress,
-            //             listing.feeRecipient,
-            //             listing.target,
-            //             '0x0000000000000000000000000000000000000000',
-            //             listing.paymentToken,
-            //         ],
-            //         [
-            //             buy.makerRelayerFee,
-            //             buy.takerRelayerFee,
-            //             buy.makerProtocolFee,
-            //             buy.takerProtocolFee,
-            //             buy.basePrice,
-            //             buy.extra,
-            //             buy.listingTime,
-            //             buy.expirationTime,
-            //             buy.salt,
-            //             BigNumber.from(0),
-            //             BigNumber.from(0),
-            //             BigNumber.from(0),
-            //             BigNumber.from(0),
-            //             listing.basePrice,
-            //             0,
-            //             listing.listingTime,
-            //             listing.expirationTime,
-            //             listing.salt,
-            //         ],
-            //         [
-            //             buy.feeMethod,
-            //             buy.side,
-            //             buy.saleKind,
-            //             buy.howToCall,
-            //             1,
-            //             1,
-            //             0,
-            //             0,
-            //         ],
-            //         buy._calldata,
-            //         listing.callData,
-            //         buy.replacementPattern,
-            //         replacementPatternTo,
-            //         buy.staticExtradata,
-            //         '0x',
-            //         [splitBuySig.v, splitSellSig.v],
-            //         [splitBuySig.r, splitBuySig.s, splitSellSig.r, splitSellSig.s, constants.HashZero],
-            //         overrides
-            //     );
-            // await transaction.wait();
-            return "Buy NFT successfully";
-        } catch (error) {
-            throw new HttpException({
-                error,
-            }, HttpStatus.FORBIDDEN);
-        }
+        //         const buyHash = hashOrder(buy);
+        //         web3.eth.accounts.wallet.add(wallet2);
+        //         const buySig = await web3.eth.sign(buyHash, buyerAddress);
+        //         const splitBuySig = ethers.utils.splitSignature(buySig);
+        //         const splitSellSig = ethers.utils.splitSignature(listing.sellSign);
+        //         console.log("run sau splitSellSig");
+        //         // FE call function
+        //         let transaction = await
+        //             wyvernExchangeContract.connect(wallet2).atomicMatch_(
+        //                 [
+        //                     buy.exchange,
+        //                     buy.maker,
+        //                     buy.taker,
+        //                     buy.feeRecipient,
+        //                     buy.target,
+        //                     buy.staticTarget,
+        //                     buy.paymentToken,
+        //                     wyvernExchangeContract.address,
+        //                     listing.makerAddress,
+        //                     listing.takerAddress,
+        //                     listing.feeRecipient,
+        //                     listing.target,
+        //                     '0x0000000000000000000000000000000000000000',
+        //                     listing.paymentToken,
+        //                 ],
+        //                 [
+        //                     buy.makerRelayerFee,
+        //                     buy.takerRelayerFee,
+        //                     buy.makerProtocolFee,
+        //                     buy.takerProtocolFee,
+        //                     buy.basePrice,
+        //                     buy.extra,
+        //                     buy.listingTime,
+        //                     buy.expirationTime,
+        //                     buy.salt,
+        //                     BigNumber.from(0),
+        //                     BigNumber.from(0),
+        //                     BigNumber.from(0),
+        //                     BigNumber.from(0),
+        //                     listing.basePrice,
+        //                     0,
+        //                     listing.listingTime,
+        //                     listing.expirationTime,
+        //                     listing.salt,
+        //                 ],
+        //                 [
+        //                     buy.feeMethod,
+        //                     buy.side,
+        //                     buy.saleKind,
+        //                     buy.howToCall,
+        //                     1,
+        //                     1,
+        //                     0,
+        //                     0,
+        //                 ],
+        //                 buy._calldata,
+        //                 listing.callData,
+        //                 buy.replacementPattern,
+        //                 replacementPatternTo,
+        //                 buy.staticExtradata,
+        //                 '0x',
+        //                 [splitBuySig.v, splitSellSig.v],
+        //                 [splitBuySig.r, splitBuySig.s, splitSellSig.r, splitSellSig.s, constants.HashZero],
+        //                 overrides
+        //             );
+        //         await transaction.wait();
+        return "Buy NFT successfully";
+        //     } catch (error) {
+        //         throw new HttpException({
+        //             error,
+        //         }, HttpStatus.FORBIDDEN);
+        //     }
     }
 
     // async mintNewNft(): Promise<any> {
@@ -374,5 +398,9 @@ export class WyvernProtocolService {
         // let tokenContract = new ethers.Contract(CHAIN_ADDRESSES.goerli.MockERC20ContractAddress, tokenABI.abi, provider);
         let transaction = await nftContract.balanceOf(address);
         return transaction.toString();
+    }
+
+    async deleteNft(tokenId: number, contractAddress: string) {
+        return await this.repository.delete({ tokenId: tokenId, target: contractAddress });
     }
 }
